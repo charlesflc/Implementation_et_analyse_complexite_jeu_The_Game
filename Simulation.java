@@ -27,7 +27,6 @@ public class Simulation {
             System.out.println("3 : Info : afficher les détails des tours");
             System.out.println("4 : Fine");
             System.out.println("5 : Finest");
-            // off
             System.out.println("0 : Off ");
         }
         int res_log = -1;
@@ -43,6 +42,7 @@ public class Simulation {
                 System.out.println("Entrez un nombre valide");
             }
         }
+
 
         // set le niveau de log
         switch (res_log) {
@@ -72,9 +72,9 @@ public class Simulation {
         //ask cbn de joueur ? 
         System.out.println("Combien de joueurs ?");
         int res = -1;
-        while (res < 1 || res > 100) {
+        while (res < 1 || res > 10) {
 
-            System.out.println("Entrez un nombre entre 1 et 100 ");
+            System.out.println("Entrez un nombre entre 1 et 10 ");
 
             String resS = System.console().readLine();
             try {

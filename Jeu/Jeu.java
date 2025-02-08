@@ -169,14 +169,14 @@ public class Jeu {
 
     public void BasesQuestion() {
         logger.info("====== Etat Bases : =====");
-     /*    logger.info("REMOVED FOR PERFORMANCE");
+         logger.info("REMOVED FOR PERFORMANCE");
           logger.info("1 : BaseAsc1  : " + baseasc1.toString());
         logger.info("2 : BaseAsc2   : " + baseasc2.toString());
         logger.info("3 : BaseDesc1  : " + basedesc1.toString());
         logger.info("4 : BaseDesc2  : " + basedesc2.toString()); 
  
         logger.info(" ");
- */
+ 
     }
 
     public void discuter(){
