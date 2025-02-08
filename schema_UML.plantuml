@@ -1,0 +1,271 @@
+@startuml
+skinparam {
+    defaultFontSize 10  // Ajustez ce nombre pour la taille de police souhaitée
+}
+package Jeu{
+
+class JoeurInteractif{
++ JoeurInteractif(nb_cartes : int, jeu : Jeu)
++ jouer(jeu : Jeu) : void
++ showDeck() : void
++ askDeck() : int
++ askBase(choix : Carte) : int
++ askFindeTour() : int
+}
+JoeurInteractif --|> Joueur
+class Jeu{
++ {static} logger : Logger
+
++ pioche : Pioche
++ baseasc1 : BaseAsc
++ baseasc2 : BaseAsc
++ basedesc1 : BaseDesc
++ basedesc2 : BaseDesc
++ dejajoue : HashSet<Integer>
+- tour_a_tour : boolean
+- nb_cartes_a_jouer : int
+- nb_joueurs : int
+- tab_joueurs : Joueur[]
+- nb_tours : int
+- score : int
+- nb_cartes_reflexion : int
+- discussion_bool : boolean
+
++ Jeu(int[] tab_type_joueur, Pioche pioche, int nb_cartes_reflexion, boolean discu, boolean tat)
+
++ jouer() : void 
++ BasesQuestion() : void
++ discuter() : void
++ getNbCartesAJouer() : int
++ getHashMap() : HashMap<Joueur, Double[]>
++ showDiscussion() : void
++ clearScreen() : void
++ getNbJoueurs() : int
++ getScore() : int
+}
+
+
+class Main{
++ taille_max : int
+- deck : Carte[]
+- pioche : Pioche
++ Main(nb_cartes : int, pioche : Pioche)
++ Main(Main : Main)
++ setPioche(pioche : Pioche) : void
++ get_Carte(indice : int) : Carte
++ utiliser_Carte(indice : int) : void
++ utiliser_Carte(carte : Carte) : void
++ getDeck() : Carte[]
++ refill() : void
++ toString() : String
++ estVide() : boolean
++ nbcartes() : int
+}
+class Carte{
+- {static} cpt : int
++ valeur : int
++ Carte()
++ Carte(num_carte : int)
+
++ toString() : String
++ getValeur() : Integer
++ {static} reset() : void
++ equals(carte : Carte) : boolean
+}
+
+class BaseAsc{
++ BaseAsc(nom : String)
++ BaseAsc(BaseAsc : base)
+
++ ajouterCarte(carte : Carte) : int
+}
+
+BaseAsc --|> Base
+
+class Simulation{
+- {static} dict_algo_val : Dictionary<Integer, String>
++ {static} main(args : String[]) : void
+}
+
+class BaseDesc{
++ BaseDesc(nom : String)
++ BaseDesc(BaseDesc : base)
++ ajouterCarte(carte : Carte) : int
+}
+
+BaseDesc --|> Base
+
+class Joueur{
+# nom : String
+# main : Main
++ Joueur(nb_cartes : int, jeu : Jeu)
++ piocher() : void
++ getNom() : String
++ toString() : String
++ {abstract} jouer(jeu : Jeu) : void
++ {abstract} discute(jeu : Jeu) : void
+}
+class Base{
+# base : ArrayDeque<Carte>
++ nom : String
++ Base(nom : String)
++ {abstract} ajouterCarte(carte : Carte) : int
++ toString() : String
++ getLatestCarte() : int
++ getSize() : int
+}
+
+class Pioche{
+- pioche : ArrayDeque<Carte>
+- seed : int
++ taille_initiale : int
+
++ Pioche(seed : int)
++ Pioche(seed : int, taille : int)
++ piocher() : Carte
++ estDans(carte : Carte) : boolean
++ toString() : String
++ reset(newSeed : int) : void
++ size() : int
++ clear() : void
++ ajoutQueuePioche(c : Carte) : void
++ resetSize(int newSeed, int taille) : void
+
+
+}
+
+class Pioche_toutTester {
+    +  permutations : List<List<Carte>> 
+
+    + Pioche_toutTester(int seed, int taille)
+    + factorial(int n) : BigInteger
+
+    + getNthPermutation(BigInteger n) : List<Carte>
+    + setPioche(List<Carte> list) : void
+}
+
+
+Pioche_toutTester --|> Pioche
+
+class CustomFormatter{
++ format(record : LogRecord) : String
+}
+CustomFormatter --|> Formatter
+}
+
+
+package Algorithmes{
+
+top to bottom direction
+
+
+RandomV2 -[hidden]--> Tab_2Cartes
+Minimiser_Gachis -[hidden]--> Tab_2Cartes
+Minimiser_ecart_carte -[hidden]--> Tab_2Cartes
+
+Algomere -[hidden]--> Minimiser_ecart_saut10
+
+class Algomere{
+
+baseouJouer : Base
+indice_carte_a_jouer : int
+baseouJouer2 : Base
+indice_carte_a_jouer2 : int
+
+# Algomere(nb_cartes : int, Jeu jeu)
++ {abstract} strategie(jeu : Jeu) : void
++ {abstract} strategie2(jeu : Jeu) : void
++ jouer(jeu : Jeu) : void
+# jouer_1carte(jeu : Jeu) : void
+# jouer_2cartes(jeu : Jeu) : void
+# jouer_utile(jeu : Jeu) : void
+# best_val_discussion(indice_base : int, jeu : Jeu) : int
++ showDeck() : void
+}
+Algomere --|> Joueur
+
+
+class Minimiser_ecart_saut10{
+
++ Minimiser_ecart_saut10(nb_cartes : int, jeu : Jeu)
++ strategie(jeu : Jeu) : void
++ strategie2(jeu : Jeu) : void
++ discute(jeu : Jeu) : void
+}
+
+Minimiser_ecart_saut10 -|> Algomere
+
+
+
+class Minimiser_ecart_carte {
+        + Minimiser_ecart_carte(int nb_cartes, Jeu jeu)
+        + void strategie(Jeu jeu)
+        + void strategie2(Jeu jeu)
+        + void discute(Jeu jeu)
+    }
+Minimiser_ecart_carte -|> Algomere
+
+class Minimiser_Gachis{
+    
++ Minimiser_gachis(nb_cartes : int, jeu : Jeu)
++ strategie(jeu : Jeu) : void
++ strategie2(jeu : Jeu) : void
++ discute(jeu : Jeu) : void
+}
+Minimiser_Gachis -|> Algomere
+
+
+class RandomV2{
++ Random(nb_cartes : int, jeu : Jeu)
++ strategie(jeu : Jeu) : void
++ strategie2(jeu : Jeu) : void
++ discute(jeu : Jeu) : void
+}
+
+RandomV2 -|> Algomere
+
+
+
+
+class Tab_2Cartes{
+    + Tab_2Cartes(int nb_cartes, Jeu jeu)
+    - jouableDans(int val,int indice_base, int valeur_base) : boolean
+    + strategie2(Jeu jeu) : void
+    + strategie(Jeu jeu) : void
+    + fonction(int a, int b) : double
+    + discute(Jeu jeu) : void
+    
+}
+Tab_2Cartes -|> Algomere
+
+
+
+}
+package Exceptions{
+
+
+    left to right direction
+
+class ExceptionJoueurPeutPasJouer{
++ ExceptionJoueurPeutPasJouer(joueur : Joueur)
+}
+ExceptionJoueurPeutPasJouer --|> ExceptionTheGame
+
+ExceptionTheGame --|> Exception
+
+class ExceptionTheGame{
++ ExceptionTheGame(message : String)
+}
+}
+
+Main--"- pioche" Pioche
+Joueur--"# main" Main
+Pioche--"- {static} instance" Pioche
+Algomere--"baseouJouer" Base
+Jeu--"- pioche" Pioche
+Jeu--"+ baseasc1 et 2 " BaseAsc
+Jeu--"+ basedesc1 et 2 " BaseDesc
+
+
+
+@enduml
